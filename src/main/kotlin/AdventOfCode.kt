@@ -1,4 +1,5 @@
 import lib.Runner
+import y2020.Day1
 
 object AoC2020 {
     val days = listOf(Day1)
