@@ -1,7 +1,6 @@
 package y2020
 
 import lib.Day
-import lib.combinations
 import lib.resourceLines
 
 object Day2 : Day {
@@ -9,48 +8,34 @@ object Day2 : Day {
     private val entries = resourceLines(2020, 2)
 
     override fun part1(): Int {
-        val regex = """(\d+)-(\d+) (\w): (\w+)""".toRegex()
-        val valid = mutableListOf<String>()
-        entries.forEach {
-            val matchResult = regex.find(it)
-            val (min, max, char, pass) = matchResult!!.destructured
-            val freq = freq(char[0], pass)
-            if(freq >= min.toInt() && freq <= max.toInt()) {
-                valid.add(pass)
-            }
-        }
-
-        return valid.size
-
+        return entries.filter {
+            val policy = parse(it)
+            val count = count(policy.char, policy.password)
+            count >= policy.min && count <= policy.max
+        }.size
     }
 
     override fun part2(): Int {
+        return entries.filter {
+            val policy = parse(it)
+            val password = policy.password
+            val firstChar = password[policy.min - 1]
+            val secondChar = password[policy.max - 1]
+            (firstChar == password[0] || secondChar == password[0]) && firstChar != secondChar
+        }.size
+    }
+
+    data class PasswordPolicy(val min: Int, val max: Int, val char: Char, val password: String)
+
+    private fun parse(string: String): PasswordPolicy {
         val regex = """(\d+)-(\d+) (\w): (\w+)""".toRegex()
-        val valid = mutableListOf<String>()
-        entries.forEach {
-            val matchResult = regex.find(it)
-            val (min, max, char, pass) = matchResult!!.destructured
-            val firstChar = pass[min.toInt() - 1]
-            val secondChar = pass[max.toInt() - 1]
-            if((firstChar == char[0] || secondChar == char[0]) && firstChar != secondChar )
-            {
-                valid.add(pass)
-            }
-        }
-
-        return valid.size
-
+        val matchResult = regex.find(string)
+        val (min, max, char, pass) = matchResult!!.destructured
+        return PasswordPolicy(min.toInt(), max.toInt(), char[0], pass)
     }
 
-    fun freq(char: Char, string : String) : Int {
-        var frequency = 0
-        for (element in string) {
-            if (char == element) {
-                ++frequency
-            }
-        }
-        return frequency
-    }
+    private fun count(char: Char, string: String) = string.toCharArray().filter { it == char }.size
+
 }
 
 fun main() {
