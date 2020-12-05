@@ -9,18 +9,11 @@ object Day5 : Day {
 
     override fun part1() = input.map { seatId(it) }.maxOf { it }
 
-    override fun part2(): Long {
-        val sortedSeats = input.map { seatId(it) }.sorted()
-        var prev = 0L
-        for (seatId in sortedSeats) {
-            if (seatId - prev == 2L) {
-                return seatId - 1
-            }
-            prev = seatId
-        }
-
-        return -1
-    }
+    override fun part2() =input.map { seatId(it) }
+                .sorted()
+                .zipWithNext()
+                .first { (seat, next) -> next - seat == 2L }
+                .let { it.first + 1 }
 
     private fun seatId(s: String) = s
             .replace('F', '0')
