@@ -2,45 +2,32 @@ package y2020
 
 import lib.Day
 import lib.resourceLines
+import lib.splitByDoubleNewLine
 
 object Day4 : Day {
 
     private val input = resourceLines(2020, 4)
 
-    override fun part1() = input.toPassports()
+    override fun part1() = input.splitByDoubleNewLine()
+            .map { toPassport(it) }
             .filter { it.isComplete() }
             .size
 
-    override fun part2() = input.toPassports()
+    override fun part2() = input.splitByDoubleNewLine()
+            .map { toPassport(it) }
             .filter { it.isComplete() }
             .filter { it.isValid() }
             .size
 
-    private fun List<String>.toPassports(): List<Passport> {
-        val passports = mutableListOf<Passport>()
-        val keys = mutableMapOf<String, String>()
-        for (line in this) {
-            if (line.isBlank()) {
-                passports.add(Passport(keys.toMap()))
-                keys.clear()
-            } else {
-                line.split(" ").forEach {
-                    val (k, v) = it.split(":")
-                    keys[k] = v
-                }
-            }
-        }
+    private fun toPassport(strings: List<String>): Passport {
+        val keys = strings.flatMap { it.split(" ") }
+                .map { it.split(":")[0] to it.split(":")[1] }
+                .toMap()
 
-        if (keys.isNotEmpty()) {
-            passports.add(Passport(keys.toMap()))
-        }
-
-        return passports.toList()
+        return Passport(keys)
     }
 
-    data class Passport(
-            val keys: Map<String, String>
-    ) {
+    data class Passport(val keys: Map<String, String>) {
         private val requiredKeys = listOf("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
 
         fun isComplete() = keys.keys.containsAll(requiredKeys)
