@@ -20,22 +20,26 @@ object Day8 : Day {
 
     override fun part2(): Long {
         val computer = Computer()
-        return instructions.mapIndexed { index, _ ->
-            computer.load(mutatedProgram(index))
-            computer.run()
-            if (computer.ranSuccessfully()) computer.result() else -1L
-        }.max()!!
+
+        return instructions.withIndex()
+                .filter { it.value.operation in listOf(JMP, NOP) }
+                .map { mutatedProgram(instructions, it.index) }
+                .map {
+                    computer.load(it)
+                    computer.run()
+                    if (computer.ranSuccessfully()) computer.result() else -1L
+                }.max()!!
     }
 
-    private fun mutatedProgram(index: Int): MutableList<Instruction> {
-        val mutation = instructions.toMutableList()
-        if (instructions[index].operation == JMP) {
-            mutation[index] = Instruction(NOP, instructions[index].argument)
+    private fun mutatedProgram(instructions: List<Instruction>, index: Int): List<Instruction> {
+        return instructions.mapIndexed { idx, entry ->
+            when {
+                idx != index -> entry
+                entry.operation == JMP -> entry.copy(operation = NOP)
+                entry.operation == NOP -> entry.copy(operation = JMP)
+                else -> entry
+            }
         }
-        if (instructions[index].operation == NOP) {
-            mutation[index] = Instruction(JMP, instructions[index].argument)
-        }
-        return mutation
     }
 }
 
