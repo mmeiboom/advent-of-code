@@ -1,6 +1,7 @@
 package y2020
 
 import lib.Computer
+import lib.Computer.ExitCode.TERMINATED
 import lib.Computer.Instruction
 import lib.Computer.Operation.JMP
 import lib.Computer.Operation.NOP
@@ -25,9 +26,7 @@ object Day8 : Day {
                 .filter { it.value.operation in listOf(JMP, NOP) }
                 .map { mutatedProgram(it.index) }
                 .map {
-                    computer.load(it)
-                    computer.run()
-                    if (computer.ranSuccessfully()) computer.result() else -1L
+                    if (computer.run(it) == TERMINATED) computer.result() else -1L
                 }.max()!!
     }
 

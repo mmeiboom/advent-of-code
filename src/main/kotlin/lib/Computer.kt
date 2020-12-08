@@ -1,5 +1,8 @@
 package lib
 
+import lib.Computer.ExitCode.ERROR
+import lib.Computer.ExitCode.TERMINATED
+
 class Computer() {
 
     private var instructions = emptyList<Instruction>()
@@ -10,14 +13,22 @@ class Computer() {
     private var looping = false
 
     fun load(program: List<Instruction>) {
+        reset()
         instructions = program
     }
 
-    fun run() {
+    fun run() : ExitCode {
         reset()
         while (!terminated && !looping) {
             applyInstruction()
         }
+
+        return if(looping) ERROR else TERMINATED
+    }
+
+    fun run(program: List<Instruction>): ExitCode {
+        this.load(program)
+        return this.run()
     }
 
     private fun applyInstruction() {
@@ -38,8 +49,6 @@ class Computer() {
         looping = false
         visited.clear()
     }
-
-    fun ranSuccessfully() = terminated && !looping
 
     fun result(): Long {
         return acc
@@ -71,5 +80,9 @@ class Computer() {
 
     enum class Operation {
         NOP, ACC, JMP
+    }
+
+    enum class ExitCode {
+        TERMINATED, ERROR
     }
 }
