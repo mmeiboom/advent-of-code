@@ -11,20 +11,7 @@ object Day9 : Day {
     private val input = resourceLines(2020, 9).map { it.toLong() }
     private const val preamble = 25
 
-    override fun part1() : Long {
-        var position = preamble
-
-//        input.filterIndexed{ i, _ -> validCheckSum(i) }.first()
-
-        while(position < input.size) {
-            if(!validCheckSum(position)) {
-                return input[position]
-            }
-            position++
-        }
-
-        return -1
-    }
+    override fun part1() = input.filterIndexed{ i, _ -> i >= preamble && !validCheckSum(i) }.first()
 
     private fun validCheckSum(position: Int): Boolean {
         return input.subList(position - preamble, position).combinations(2)
