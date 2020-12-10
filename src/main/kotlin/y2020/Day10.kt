@@ -6,41 +6,34 @@ import lib.resourceLines
 
 object Day10 : Day {
 
-    private val input = resourceLines(2020, 10).map { it.toInt() }
+    private val input = resourceLines(2020, 10)
 
     override fun part1(): Long {
-        val adapters = input.toMutableList()
-        adapters.add(0)
-        adapters.add(adapters.max()!! + 3)
-
-        val deltas = adapters.sorted()
+        val deltas = sortedAdapters()
                 .zipWithNext()
                 .map { pair -> pair.second - pair.first }
-                .groupBy { it }
 
-        return deltas[1]!!.size * deltas[3]!!.size.toLong()
+        return deltas.count { it == 1 } * deltas.count { it == 3 }.toLong()
     }
 
     override fun part2(): Long {
-        val adapters = mutableListOf<Int>()
-        adapters.add(0)
-        adapters.addAll(input.sorted())
-        adapters.add(adapters.max()!! + 3)
-
-        var totalArrangements = 1L
+        val adapters = sortedAdapters()
+        var arrangements = 1L
         var prevSplit = 0
-        var pos = 1
 
-        while (pos <= adapters.size) {
+        for (pos in 1..adapters.size) {
             if (pos == adapters.size || (adapters[pos] - adapters[pos - 1]) == 3) {
-                val sublist = adapters.subList(prevSplit, pos)
-                totalArrangements *= countArrangements(sublist)
+                arrangements *= countArrangements(adapters.subList(prevSplit, pos))
                 prevSplit = pos
             }
-            pos++
         }
 
-        return totalArrangements
+        return arrangements
+    }
+
+    private fun sortedAdapters(): List<Int> {
+        val sortedInput = input.map { it.toInt() }.sorted()
+        return listOf(0).plus(sortedInput).plus(sortedInput.max()!! + 3).sorted()
     }
 
     private fun countArrangements(list: List<Int>): Int {
@@ -71,12 +64,9 @@ object Day10 : Day {
         return lists
     }
 
-    fun isValid(list: List<Int>): Boolean {
-        val valid = list.zipWithNext().none { p -> ((p.second - p.first) > 3) || ((p.second - p.first) < 0) }
-
-        //println("$valid: $list")
-        return valid
-    }
+    private fun isValid(list: List<Int>) = list
+            .zipWithNext()
+            .none { p -> ((p.second - p.first) > 3) || ((p.second - p.first) < 0) }
 }
 
 fun main() {
