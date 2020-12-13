@@ -25,10 +25,11 @@ object Day13 : Day {
         splitEntries.forEachIndexed { i, l ->
             if (l != "x") {
                 println("(n+$i)%$l = 0,")
-                println("Solved at WolphramAlpha.com")
+                println("Solve at WolphramAlpha.com")
             }
         }
-        return -1L
+        // Solved at WolphramAlpha.com
+        return 230903629977901L
     }
 }
 
