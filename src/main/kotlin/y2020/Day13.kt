@@ -5,14 +5,30 @@ import lib.resourceLines
 
 object Day13 : Day {
 
-    private val input = resourceLines(2020, 6)
+    private val input = resourceLines(2020, 13)
 
     override fun part1() : Long {
-        return -1
+        val ts = input[0].toLong()
+        val lines = input[1].split(",")
+                .filter { it != "x" }
+                .map { it.toLong() }
+
+        val pair = lines.map { it to it - ts.rem(it) }
+                .sortedBy { it.second }
+                .first()
+
+        return pair.first * pair.second
     }
 
     override fun part2() : Long {
-        return -1
+        val splitEntries = input[1].split(",")
+        splitEntries.forEachIndexed { i, l ->
+            if (l != "x") {
+                println("(n+$i)%$l = 0,")
+                println("Solved at WolphramAlpha.com")
+            }
+        }
+        return -1L
     }
 }
 
