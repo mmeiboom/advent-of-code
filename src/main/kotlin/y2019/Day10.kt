@@ -10,7 +10,7 @@ object Day10 : Day {
     private val map = toPoints(resourceLines(2019, 10))
     private val station = Point(x = 11, y = 19)
 
-    override fun part1() = map.map { observables(it) }.max() ?: 0
+    override fun part1() = map.map { observables(it) }.maxOrNull() ?: 0
 
     private fun observables(point: Point): Int {
         return map.filter { p -> canObserve(point, p) }.size

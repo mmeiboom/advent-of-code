@@ -65,7 +65,7 @@ object Day15 : Day {
                 val backtracking = currentLocation.neighborsHv().none { !discoveredArea.containsKey(it) }
 
                 if(backtracking && currentLocation == startLocation) {
-                    return discoveredArea.values.max() ?: -1
+                    return discoveredArea.values.maxOrNull() ?: -1
                 }
 
                 val nextLocation = currentLocation.neighborsHv().find { !discoveredArea.containsKey(it) }

@@ -27,7 +27,7 @@ object Day8 : Day {
                 .map { mutatedProgram(it.index) }
                 .map {
                     if (computer.run(it) == TERMINATED) computer.result() else -1L
-                }.max()!!
+                }.maxOrNull()!!
     }
 
     private fun mutatedProgram(index: Int): List<Instruction> {

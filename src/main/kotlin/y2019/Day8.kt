@@ -15,7 +15,7 @@ object Day8 : Day {
     private val layers = input.chunked(width * height)
 
     override fun part1(): Any {
-        val antiCorruptionLayer = layers.minBy { it.count { digit -> digit == 0 } }.orEmpty()
+        val antiCorruptionLayer = layers.minByOrNull { it.count { digit -> digit == 0 } }.orEmpty()
         val counts = antiCorruptionLayer.groupingBy { it }.eachCount()
         return counts.getValue(WHITE) * counts.getValue(TRANSPARENT)
     }

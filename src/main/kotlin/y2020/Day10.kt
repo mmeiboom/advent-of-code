@@ -33,7 +33,7 @@ object Day10 : Day {
 
     private fun sortedAdapters(): List<Int> {
         val sortedInput = input.map { it.toInt() }.sorted()
-        return listOf(0).plus(sortedInput).plus(sortedInput.max()!! + 3).sorted()
+        return listOf(0).plus(sortedInput).plus(sortedInput.maxOrNull()!! + 3).sorted()
     }
 
     private fun countArrangements(list: List<Int>): Int {

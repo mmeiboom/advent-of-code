@@ -13,7 +13,8 @@ fun resource(year: Int, day: Int): InputStream {
 }
 
 fun resourceString(year: Int, day: Int): String {
-    return resource(year, day).bufferedReader().use { it.readText() }
+    val name = String.format("/%d/day%02d.txt", year, day)
+    return {}.javaClass.getResource(name).readText()
 }
 
 fun resourceLines(year: Int, day: Int): List<String> {
@@ -158,7 +159,7 @@ fun combine(ranges: List<LongRange>) : List<LongRange> {
 
         list.removeAll(others)
         val combined = others + listOf(r)
-        list += combined.map { it.first }.min()!! .. combined.map { it.last }.max()!!
+        list += combined.minOf { it.first } .. combined.maxOf { it.last }
     }
 
     return list.sortedBy { it.first }

@@ -22,7 +22,7 @@ object Day6 : Day {
         val pathToComForSan = path("SAN")
 
         val sharedObjectsInPath = pathToComForSan.keys.intersect(pathToComForYou.keys)
-        return sharedObjectsInPath.map { o -> pathToComForYou.getValue(o) + pathToComForSan.getValue(o) }.min() ?: -1
+        return sharedObjectsInPath.map { o -> pathToComForYou.getValue(o) + pathToComForSan.getValue(o) }.minOrNull() ?: -1
     }
 
     private fun path(objectInSpace: String): Map<String, Int> {

@@ -26,10 +26,10 @@ object Day3 : Day {
         return points
     }
 
-    override fun part1() = intersections.map { it.manhattan() }.min()!!
+    override fun part1() = intersections.map { it.manhattan() }.minOrNull()!!
 
     override fun part2() : Any {
         val (first, second) = pointsPerWire.map { list -> list.filter { intersections.contains(it.first) }.toMap() }
-        return first.map { it.value + second.getValue(it.key) }.min()!!
+        return first.map { it.value + second.getValue(it.key) }.minOrNull()!!
     }
 }
