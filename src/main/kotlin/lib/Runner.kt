@@ -30,6 +30,12 @@ object Runner {
         val dayName = day.javaClass.simpleName.replace("Day", "").toInt()
 
         val date = LocalDate.of(year, 12, dayName)
+        val today = LocalDate.now()
+
+        if(date.isAfter(today)) {
+            println(format.format("" + dayName + " " + date.format(dayOfWeek), "", "", "","",""))
+            return
+        }
 
         val start1 = System.currentTimeMillis()
         val p1 = day.part1()
