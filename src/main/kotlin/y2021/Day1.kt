@@ -1,21 +1,17 @@
 package y2021
 
 import lib.Day
-import lib.combinations
 import lib.resourceLines
 
 object Day1 : Day {
 
-    private val input = resourceLines(2021, 1)
+    private val input = resourceLines(2021, 1).map { it.toLong() }
 
-    override fun part1() : Long {
-        return -1
-    }
+    override fun part1() = input.zipWithNext().count { it.first < it.second }
 
-    override fun part2() : Long {
-        return -1
-    }
-
+    override fun part2() = input.windowed(3)
+        .zipWithNext()
+        .count { it.first.sum() < it.second.sum() }
 }
 
 fun main() {
