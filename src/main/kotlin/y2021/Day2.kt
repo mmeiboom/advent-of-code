@@ -5,14 +5,43 @@ import lib.resourceLines
 
 object Day2 : Day {
 
-    private val input = resourceLines(2021, 6)
+    private val input = resourceLines(2021, 2)
 
     override fun part1() : Long {
-        return -1
+        var horizontal = 0L
+        var depth = 0L
+
+        input.forEach {
+            val (dir, delta) = it.split(' ')
+            when(dir) {
+                "forward" -> horizontal += delta.toLong()
+                "up" -> depth -= delta.toLong()
+                "down" -> depth += delta.toLong()
+            }
+        }
+
+        return horizontal * depth
+
     }
 
     override fun part2() : Long {
-        return -1
+        var horizontal = 0L
+        var depth = 0L
+        var aim = 0L
+
+        input.forEach {
+            val (dir, delta) = it.split(' ')
+            when(dir) {
+                "forward" -> {
+                    horizontal += delta.toLong()
+                    depth += aim * delta.toLong()
+                }
+                "up" -> aim -= delta.toLong()
+                "down" -> aim += delta.toLong()
+            }
+        }
+
+        return horizontal * depth
     }
 
 }
