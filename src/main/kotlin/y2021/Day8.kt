@@ -2,77 +2,109 @@ package y2021
 
 import lib.Day
 import lib.resourceLines
+import lib.sorted
 
 object Day8 : Day {
 
     private val input = resourceLines(2021, 8)
 
     override fun part1(): Int {
-        val regex = Regex("([a-z]+)")
-        return input.flatMap {
-            val output = it.split("|")[1]
-            val matches = regex.findAll(output)
-            matches.map { m -> m.groupValues[1] }
-        }.count {
-            listOf(2, 3, 4, 7).contains(it.length)
-        }
+        val displays = parseInput()
+        return displays
+            .flatMap { it.takeLast(4) }
+            .count { listOf(2, 3, 4, 7).contains(it.length) }
     }
 
     override fun part2(): Int {
-        val regex = Regex("([a-z]+)")
-        val signals = input.map {
-            val matches = regex.findAll(it)
-            matches.map { m -> m.groupValues[1].toCharArray().sorted().joinToString("") }
+        val displays = parseInput()
+        return displays.sumOf {
+            val signal = it.take(10)
+            val output = it.takeLast(4)
+            decode(mapWires(signal), output)
         }
-        return signals.sumOf { decode(it.toList()) }
     }
 
-    private fun decode(pairs: List<String>): Int {
-        val outputPairs = pairs.takeLast(4)
-        val legend = mutableMapOf(
-            1 to (pairs.firstOrNull { it.length == 2 } ?: ""),
-            4 to (pairs.firstOrNull { it.length == 4 } ?: ""),
-            7 to (pairs.firstOrNull { it.length == 3 } ?: ""),
-            8 to (pairs.firstOrNull { it.length == 7 } ?: "")
+    private fun parseInput(): List<List<String>> {
+        val regex = Regex("([a-z]+)")
+        val displays = input.map {
+            val matches = regex.findAll(it)
+            matches.map { m -> m.groupValues[1].sorted() }.toList()
+        }
+        return displays
+    }
+
+    private fun mapWires(signal: List<String>): Map<String, Int> {
+        class Digit {
+            val candidates = signal.toMutableList()
+
+            fun segments(count: Int) {
+                candidates.removeIf { it.length != count }
+            }
+
+            fun matches(digit: Digit, overlap: Int) {
+                candidates.removeIf { candidate ->
+                    candidate.count { digit.letters.contains(it) } != overlap
+                }
+            }
+
+            val letters get() = candidates.single()
+        }
+
+        fun digit(lambda: Digit.() -> Unit) = Digit().apply(lambda)
+
+        val one = digit { segments(2) }
+        val four = digit { segments(4) }
+        val seven = digit { segments(3) }
+        val eight = digit { segments(7) }
+
+        val zero = digit {
+            segments(6)
+            matches(four, 3)
+            matches(seven, 3)
+        }
+
+        val two = digit {
+            segments(5)
+            matches(one, 1)
+            matches(four, 2)
+        }
+        val three = digit {
+            segments(5)
+            matches(seven, 3)
+            matches(four, 3)
+        }
+        val five = digit {
+            segments(5)
+            matches(one, 1)
+            matches(four, 3)
+        }
+        val six = digit {
+            segments(6)
+            matches(one, 1)
+        }
+        val nine = digit {
+            segments(6)
+            matches(four, 4)
+            matches(seven, 3)
+        }
+
+        return mapOf(
+            zero.letters to 0,
+            one.letters to 1,
+            two.letters to 2,
+            three.letters to 3,
+            four.letters to 4,
+            five.letters to 5,
+            six.letters to 6,
+            seven.letters to 7,
+            eight.letters to 8,
+            nine.letters to 9,
         )
+    }
 
-        legend[9] = pairs.first {
-            it.length == 6
-                    && it.toSet().containsAll(legend.getValue(4).toSet())
-                    && it.toSet().containsAll(legend.getValue(1).toSet())
-        }
-
-        legend[0] = pairs.first {
-            it.length == 6
-                    && !it.toSet().containsAll(legend.getValue(4).toSet())
-                    && it.toSet().containsAll(legend.getValue(1).toSet())
-        }
-
-        legend[6] = pairs.first {
-            it.length == 6
-                    && !it.toSet().containsAll(legend.getValue(4).toSet())
-                    && !it.toSet().containsAll(legend.getValue(1).toSet())
-        }
-
-        legend[2] = pairs.first {
-            it.length == 5
-                    && !legend.getValue(6).toSet().containsAll(it.toSet())
-                    && !it.toSet().containsAll(legend.getValue(1).toSet())
-        }
-
-        legend[3] = pairs.first {
-            it.length == 5
-                    && it.toSet().containsAll(legend.getValue(1).toSet())
-        }
-
-        legend[5] = pairs.first {
-            it.length == 5
-                    && legend.getValue(6).toSet().containsAll(it.toSet())
-        }
-
-
-        return outputPairs.map {
-            legend.entries.first { (k, v) -> v == it }.key.digitToChar()
+    private fun decode(legend: Map<String, Int>, output: List<String>): Int {
+        return output.map {
+            legend.getValue(it).digitToChar()
         }.joinToString(separator = "").toInt()
     }
 }

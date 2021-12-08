@@ -34,6 +34,8 @@ fun resourceRegex(year: Int, day: Int, regex: Regex): List<List<String>> {
     return lines.map { regex.matchEntire(it)!!.groupValues }.toList()
 }
 
+fun String.sorted() = this.toCharArray().sorted().joinToString("")
+
 fun resourceRegex(year: Int, day: Int, regex: Map<String, Regex>) = resourceLines(year, day).map { matchRegex(it, regex) }
 
 private fun matchRegex(line: String, regex: Map<String, Regex>) : Pair<String, List<String>> {
