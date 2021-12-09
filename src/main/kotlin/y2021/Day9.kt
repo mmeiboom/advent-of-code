@@ -34,11 +34,9 @@ object Day9 : Day {
         pointsToCheck.add(startingPoint)
         while(pointsToCheck.isNotEmpty()) {
             val p = pointsToCheck.removeFirst()
-            p.neighborsHv().forEach {
-                if(!basin.contains(p) && input.getOrDefault(p, 9) < 9) {
-                    basin.add(p)
-                    pointsToCheck.addAll(p.neighborsHv())
-                }
+            if(!basin.contains(p) && input.getOrDefault(p, 9) < 9) {
+                basin.add(p)
+                pointsToCheck.addAll(p.neighborsHv())
             }
         }
         return basin.size
