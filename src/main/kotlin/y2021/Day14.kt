@@ -6,41 +6,47 @@ import lib.resourceLines
 object Day14 : Day {
 
     private val input = resourceLines(2021, 14)
+    private val template = input.first()
+    private val rules = parseInput()
 
-    override fun part1(): Int {
-        val (template, rules) = parseInput()
-        var lastString = template
-        for (step in 1..10) {
-            var newString = ""
-            lastString.indices.forEach {
-                newString = if (it < lastString.length - 1) {
-                    val pair = "${lastString[it]}${lastString[it + 1]}"
-                    val insertionChar = rules.getValue(pair)
-                    "$newString${lastString[it]}$insertionChar"
-                } else {
-                    "$newString${lastString[it]}"
+    override fun part1() = run(10)
+
+    override fun part2() = run(40)
+
+    private fun run(steps: Int): Long {
+
+        val counts = rules.keys.associateWith { 0L }.toMutableMap()
+        template.zipWithNext().forEach { (a, b) -> counts["$a$b"] = counts.getValue("$a$b") + 1 }
+
+        for (step in 1..steps) {
+            val before = counts.toMap()
+            counts.keys.forEach { counts[it] = 0 }
+            before.keys.forEach {
+                if (before.getValue(it) > 0) {
+                    val insert = rules.getValue(it)
+                    val left = "${it[0]}$insert"
+                    val right = "$insert${it[1]}"
+
+                    counts[left] = before.getValue(it) + counts.getOrDefault(left, 0)
+                    counts[right] = before.getValue(it) + counts.getOrDefault(right, 0)
                 }
             }
-            lastString = newString
         }
-        val counts = lastString.toCharArray()
-            .groupBy { it }
-            .map { it.key to it.value.size }
-            .toMap()
 
-        return (counts.values.maxOrNull() ?: -1) - (counts.values.minOrNull() ?: -1)
+        val charCounts = mutableMapOf<Char, Long>()
+        charCounts[template.first()] = 1
+        charCounts[template.last()] = charCounts.getOrDefault(template.last(), 0) + 1
+        for((pair, n) in counts) {
+            for (c in pair) {
+                charCounts[c] = charCounts.getOrDefault(c, 0) + n
+            }
+        }
+
+        return (charCounts.values.maxOrNull()!! - charCounts.values.minOrNull()!!) / 2
     }
 
-    override fun part2(): Long {
-        return -1
-    }
-
-    private fun parseInput(): Pair<String, Map<String, Char>> {
-        val template = input.first()
-        val rules = input.subList(2, input.size)
-            .map { it.substring(0, 2) to it.last() }
-            .toMap()
-        return Pair(template, rules)
+    private fun parseInput(): Map<String, Char> {
+        return input.drop(2).associate { it.substring(0, 2) to it.last() }
     }
 }
 
