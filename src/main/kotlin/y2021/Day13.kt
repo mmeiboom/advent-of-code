@@ -22,9 +22,9 @@ object Day13 : Day {
 
     private fun printGrid(grid: Collection<Point>) {
         val max = grid.maxOrNull() ?: return
-        for (i in 0..max.y) {
-            for (j in 0..max.x) {
-                val char = if(grid.contains(Point(j,i))) '#' else ' '
+        for (i in 0..max.y + 1) {
+            for (j in 0..max.x + 1) {
+                val char = if(grid.contains(Point(j,i))) '⬜' else '⬛'
                 print("$char")
             }
             print("\n")
