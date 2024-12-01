@@ -94,8 +94,8 @@ object Y2023D07 : Day {
         KING('K'),
         ACE('A');
 
-        fun rank(withJokers: Boolean): Int {
-            return if(withJokers && this.symbol == 'J') -1 else this.ordinal
+        fun rank(withJackAsJoker: Boolean): Int {
+            return if(withJackAsJoker && this == JACK) -1 else this.ordinal
         }
 
         companion object {
