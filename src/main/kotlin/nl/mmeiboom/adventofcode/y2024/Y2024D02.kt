@@ -21,18 +21,18 @@ object Y2024D02 : Day {
 
     data class Report(val levels: Levels) {
         fun isSafe(applyDampening: Boolean = false): Boolean {
-            val permutations = if(applyDampening) levels.dampen() else listOf(levels)
+            val permutations = if (applyDampening) levels.dampen() else listOf(levels)
             return permutations.any { it.graduallyIncrements() || it.graduallyDecrements() }
         }
     }
 
     data class Levels(val values: List<Long>) {
         fun graduallyIncrements(): Boolean {
-            return values.zipWithNext().all { (a,b) -> b - a in 1..3 }
+            return values.zipWithNext().all { (a, b) -> b - a in 1..3 }
         }
 
         fun graduallyDecrements(): Boolean {
-            return values.zipWithNext().all { (a,b) -> a - b in 1..3 }
+            return values.zipWithNext().all { (a, b) -> a - b in 1..3 }
         }
 
         fun dampen(): List<Levels> {
