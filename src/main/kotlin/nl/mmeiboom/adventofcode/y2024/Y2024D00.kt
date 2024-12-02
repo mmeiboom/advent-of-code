@@ -5,7 +5,7 @@ import nl.mmeiboom.adventofcode.lib.resourceLines
 
 object Y2024D00 : Day {
 
-    val input = resourceLines(2023, 8)
+    val input = resourceLines(2024, 0)
 
     override fun part1() = -1
 
@@ -13,5 +13,6 @@ object Y2024D00 : Day {
 }
 
 fun main() {
-    print(Y2024D00.part1())
+    println(Y2024D00.part1())
+    println(Y2024D00.part2())
 }
