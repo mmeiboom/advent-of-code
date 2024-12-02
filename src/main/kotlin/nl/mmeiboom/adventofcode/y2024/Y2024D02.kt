@@ -16,34 +16,36 @@ object Y2024D02 : Day {
         this.map { extractReport(it) }
 
     private fun extractReport(it: String): Report {
-        return Report(it.extractNumbers())
+        return Report(Levels(it.extractNumbers()))
     }
 
-    data class Report(val levels: List<Long>) {
+    data class Report(val levels: Levels) {
         fun isSafe(applyDampening: Boolean = false): Boolean {
-            if(!applyDampening) return levelsGraduallyIncrement(levels) || levelsGraduallyDecrement(levels)
-            val dampenedLevels = dampen(levels)
-            return dampenedLevels.any { levelsGraduallyIncrement(it) || levelsGraduallyDecrement(it) }
+            val permutations = if(applyDampening) levels.dampen() else listOf(levels)
+            return permutations.any { it.graduallyIncrements() || it.graduallyDecrements() }
+        }
+    }
+
+    data class Levels(val values: List<Long>) {
+        fun graduallyIncrements(): Boolean {
+            return values.zipWithNext().all { (a,b) -> b - a in 1..3 }
         }
 
-        private fun dampen(levels: List<Long>): List<List<Long>> {
-            val allDampenedLevels = mutableListOf(levels)
-            levels.indices.forEach {
-                val dampenedLevels = levels.toMutableList()
-                dampenedLevels.removeAt(it)
-                allDampenedLevels.add(dampenedLevels)
+        fun graduallyDecrements(): Boolean {
+            return values.zipWithNext().all { (a,b) -> a - b in 1..3 }
+        }
+
+        fun dampen(): List<Levels> {
+            val allDampenedLevels = mutableListOf(this)
+            values.indices.forEach {
+                val dampenedValues = values.toMutableList()
+                dampenedValues.removeAt(it)
+                allDampenedLevels.add(Levels(dampenedValues))
             }
             return allDampenedLevels
         }
-
-        private fun levelsGraduallyIncrement(levels: List<Long>): Boolean {
-            return levels.zipWithNext().all { (a,b) -> b - a in 1..3 }
-        }
-
-        private fun levelsGraduallyDecrement(levels: List<Long>): Boolean {
-            return levels.zipWithNext().all { (a,b) -> a - b in 1..3 }
-        }
     }
+
 }
 
 fun main() {
