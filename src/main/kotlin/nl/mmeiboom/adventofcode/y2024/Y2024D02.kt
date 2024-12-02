@@ -35,15 +35,13 @@ object Y2024D02 : Day {
             return values.zipWithNext().all { (a, b) -> a - b in 1..3 }
         }
 
-        fun dampen(): List<Levels> {
-            val allDampenedLevels = mutableListOf(this)
-            values.indices.forEach {
-                val dampenedValues = values.toMutableList()
-                dampenedValues.removeAt(it)
-                allDampenedLevels.add(Levels(dampenedValues))
+        fun dampen(): List<Levels> =
+            values.indices.map {
+                Levels(removeAt(values, it))
             }
-            return allDampenedLevels
-        }
+
+        private fun removeAt(values: List<Long>, indexToRemove: Int) =
+            values.filterIndexed { index, _ -> index != indexToRemove }
     }
 
 }
