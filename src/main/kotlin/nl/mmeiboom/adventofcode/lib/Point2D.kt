@@ -17,6 +17,8 @@ data class Point2D(val x: Int, val y: Int) : Comparable<Point2D> {
         Direction.WEST -> Point2D(x - 1, y)
     }
 
+    operator fun minus(other: Point2D) = Point2D(x - other.x, y - other.y)
+
     override fun compareTo(other: Point2D) = if (y == other.y) x.compareTo(other.x) else y.compareTo(other.y)
 
     fun manhattan(other: Point2D) = Math.abs(x - other.x) + Math.abs(y - other.y)
