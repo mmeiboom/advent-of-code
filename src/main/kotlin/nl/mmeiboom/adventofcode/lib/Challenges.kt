@@ -3,6 +3,13 @@ package nl.mmeiboom.adventofcode.lib
 import nl.mmeiboom.adventofcode.y2023.Y2023D01
 import nl.mmeiboom.adventofcode.y2022.*
 import nl.mmeiboom.adventofcode.y2023.*
+import nl.mmeiboom.adventofcode.y2024.Y2024D01
+import nl.mmeiboom.adventofcode.y2024.Y2024D02
+import nl.mmeiboom.adventofcode.y2024.Y2024D03
+import nl.mmeiboom.adventofcode.y2024.Y2024D04
+import nl.mmeiboom.adventofcode.y2024.Y2024D05
+import nl.mmeiboom.adventofcode.y2024.Y2024D06
+import nl.mmeiboom.adventofcode.y2024.Y2024D07
 
 object Challenges {
 
@@ -67,5 +74,15 @@ object Challenges {
         Y2023D02,
         Y2023D03,
         Y2023D04,
+    )
+
+    val y2024 = listOf(
+        Y2024D01,
+        Y2024D02,
+        Y2024D03,
+        Y2024D04,
+        Y2024D05,
+        Y2024D06,
+        Y2024D07,
     )
 }
