@@ -41,7 +41,7 @@ object Y2024D07 : Day {
 
     enum class Operator(val biFunction: (Long, Long) -> Long) {
         MULTIPLY({ a, b -> a * b }),
-        PLUS({ a, b -> a * b }),
+        PLUS({ a, b -> a + b }),
         CONCATENATE({ a, b -> "$a$b".toLong() })
     }
 }
