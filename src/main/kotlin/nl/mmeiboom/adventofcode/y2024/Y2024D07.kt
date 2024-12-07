@@ -26,7 +26,7 @@ object Y2024D07 : Day {
             return hasSolution(operators, testValue, listOf(numbers[0]), numbers.subList(1, numbers.size))
         }
 
-        private fun hasSolution(operators: List<Operator>, testValue: Long, results: List<Long>, numbers: List<Long>) : Boolean {
+        private tailrec fun hasSolution(operators: List<Operator>, testValue: Long, results: List<Long>, numbers: List<Long>) : Boolean {
             if(numbers.isEmpty()) return results.contains(testValue)
             val head = numbers[0]
             val tail = numbers.subList(1, numbers.size)
