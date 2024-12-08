@@ -39,12 +39,12 @@ object Y2024D08 : Day {
         return antiNodes.size.toLong()
     }
 
-    private fun findAntiNodes(start: Point2D, dist: Point2D): Collection<Point2D> {
+    private fun findAntiNodes(start: Point2D, step: Point2D): Collection<Point2D> {
         val antiNodes = mutableSetOf<Point2D>()
         var current = start
         while (current in input.keys) {
             antiNodes.add(current)
-            current += dist
+            current += step
         }
         return antiNodes
     }
