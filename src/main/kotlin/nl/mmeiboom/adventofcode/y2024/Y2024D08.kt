@@ -2,62 +2,52 @@ package nl.mmeiboom.adventofcode.y2024
 
 import nl.mmeiboom.adventofcode.lib.Day
 import nl.mmeiboom.adventofcode.lib.Point2D
+import nl.mmeiboom.adventofcode.lib.combinations
 import nl.mmeiboom.adventofcode.lib.resourceLines
 import nl.mmeiboom.adventofcode.lib.toPointsMap
 
 object Y2024D08 : Day {
 
-    val input = resourceLines(2024, 8).toPointsMap()
+    private val input = resourceLines(2024, 8).toPointsMap()
+    private val pointsPerAntenna = input.entries
+        .groupBy { it.value }
+        .filter { (k, _) -> k.isDigit() || k.isLetter() }
+        .map { (k, v) -> k to v.map { it.key } }
+        .associate { (k, v) -> k to v }
 
-    override fun part1() : Long {
-        val antinodes = mutableSetOf<Point2D>()
-        val pointsPerAntenna = input.entries
-            .groupBy { it.value }
-            .filter { (k, _) -> k.isDigit() || k.isLetter()}
-            .map { (k, v) -> k to v.map { it.key }}
-            .associate { (k, v) -> k to v }
+    override fun part1(): Long {
+        val antiNodes = mutableSetOf<Point2D>()
 
-        pointsPerAntenna.forEach { (k, v) ->
-            for(a1 in 0..v.size -1) {
-                for(a2 in (a1 + 1)..v.size - 1) {
-                    val an1 = v[a1] + (v[a1] - v[a2])
-                    val an2 = v[a2] + (v[a2] - v[a1])
-                    antinodes.add(an1)
-                    antinodes.add(an2)
-                }
+        pointsPerAntenna.forEach { (_, points) ->
+            points.combinations(2).forEach { (a1, a2) ->
+                antiNodes.add(a1 + (a1 - a2))
+                antiNodes.add(a2 + (a2 - a1))
             }
         }
 
-        return antinodes.count { it in input.keys }.toLong()
+        return antiNodes.count { it in input.keys }.toLong()
     }
 
-    override fun part2() : Long {
-        val antinodes = mutableSetOf<Point2D>()
-        val pointsPerAntenna = input.entries
-            .groupBy { it.value }
-            .filter { (k, _) -> k.isDigit() || k.isLetter() }
-            .map { (k, v) -> k to v.map { it.key } }
-            .associate { (k, v) -> k to v }
-
-        pointsPerAntenna.forEach { (k, v) ->
-            for (a1 in 0..v.size - 1) {
-                for (a2 in (a1 + 1)..v.size - 1) {
-                    val dist = (v[a1] - v[a2])
-                    var back = v[a1]
-                    while (back in input.keys) {
-                        antinodes.add(back)
-                        back -= dist
-                    }
-                    var forward = v[a1]
-                    while (forward in input.keys) {
-                        antinodes.add(forward)
-                        forward += dist
-                    }
-                }
+    override fun part2(): Long {
+        val antiNodes = mutableSetOf<Point2D>()
+        pointsPerAntenna.forEach { (_, points) ->
+            points.combinations(2).forEach { (a1, a2) ->
+                antiNodes.addAll(findAntiNodes(a1, a1 - a2))
+                antiNodes.addAll(findAntiNodes(a1, a2 - a1))
             }
         }
 
-        return antinodes.size.toLong()
+        return antiNodes.size.toLong()
+    }
+
+    private fun findAntiNodes(start: Point2D, dist: Point2D): Collection<Point2D> {
+        val antiNodes = mutableSetOf<Point2D>()
+        var current = start
+        while (current in input.keys) {
+            antiNodes.add(current)
+            current += dist
+        }
+        return antiNodes
     }
 }
 
