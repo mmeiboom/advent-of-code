@@ -10,10 +10,9 @@ object Y2024D08 : Day {
 
     private val input = resourceLines(2024, 8).toPointsMap()
     private val pointsPerAntenna = input.entries
-        .groupBy { it.value }
+        .groupBy({ it.value }, { it.key })
         .filter { (k, _) -> k.isDigit() || k.isLetter() }
-        .map { (k, v) -> k to v.map { it.key } }
-        .associate { (k, v) -> k to v }
+        .toMap()
 
     override fun part1(): Long {
         val antiNodes = mutableSetOf<Point2D>()
