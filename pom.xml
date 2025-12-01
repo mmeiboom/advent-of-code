@@ -91,6 +91,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.10.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.shiguruikai</groupId>
             <artifactId>combinatoricskt</artifactId>
             <version>1.6.0</version>
