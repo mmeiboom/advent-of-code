@@ -12,8 +12,8 @@ import kotlin.time.measureTime
  * allowing me to play around with reflection and catch up on 10 years of AoC.
  */
 fun main() {
-    val year = 2025
-    val day = getCurrentDay()
+    val year = 2015
+    val day = 5//getCurrentDay()
     solveDay(day, year) { s ->
         val solver = getConstructorOfDay(day, year).newInstance(s)
         solver
