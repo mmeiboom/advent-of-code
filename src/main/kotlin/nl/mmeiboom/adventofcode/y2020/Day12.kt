@@ -2,7 +2,7 @@ package nl.mmeiboom.adventofcode.y2020
 
 import nl.mmeiboom.adventofcode.lib.Day
 import nl.mmeiboom.adventofcode.lib.Direction
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceLines
 
 object Day12 : Day {
@@ -10,7 +10,7 @@ object Day12 : Day {
     private val instructions = resourceLines(2020, 12).map { Instruction(it[0], it.substring(1).toInt()) }
 
     override fun part1() : Long {
-        val start = Point(0,0)
+        val start = Point2D(0,0)
         var position = start
         var direction = Direction.EAST
         instructions.forEach {
@@ -29,9 +29,9 @@ object Day12 : Day {
     }
 
     override fun part2() : Long {
-        var start = Point(0,0)
-        var ship = Point(0,0)
-        var waypoint = Point(10, -1)
+        var start = Point2D(0,0)
+        var ship = Point2D(0,0)
+        var waypoint = Point2D(10, -1)
         instructions.forEach {
             when(it.instruction) {
                 'N' -> waypoint = waypoint.up(it.distance)

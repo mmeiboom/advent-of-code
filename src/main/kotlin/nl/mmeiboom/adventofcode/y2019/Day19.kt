@@ -1,6 +1,6 @@
 import nl.mmeiboom.adventofcode.lib.Day
 import nl.mmeiboom.adventofcode.lib.IntCodeComputer
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceString
 
 object Day19 : Day {
@@ -10,14 +10,14 @@ object Day19 : Day {
     override fun part1(): Any {
         val points = IntRange(0, 49).flatMap { x ->
             IntRange(0, 49).map { y ->
-                Point(x, y)
+                Point2D(x, y)
             }
         }
 
         return points.filter { hasTraction(it) }.size
     }
 
-    private fun hasTraction(point: Point): Boolean {
+    private fun hasTraction(point: Point2D): Boolean {
         val computer = IntCodeComputer(program)
         computer.input.add(point.x.toLong())
         computer.input.add(point.y.toLong())
@@ -28,7 +28,7 @@ object Day19 : Day {
 
     override fun part2(): Any {
 
-        var bottomLeft = Point(0, 99)
+        var bottomLeft = Point2D(0, 99)
 
         while(true) {
             while(!hasTraction(bottomLeft)) {

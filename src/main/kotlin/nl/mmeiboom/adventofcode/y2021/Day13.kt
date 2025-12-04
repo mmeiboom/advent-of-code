@@ -1,7 +1,7 @@
 package nl.mmeiboom.adventofcode.y2021
 
 import nl.mmeiboom.adventofcode.lib.Day
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceLines
 
 object Day13 : Day {
@@ -20,11 +20,11 @@ object Day13 : Day {
         return afterOneFold.size
     }
 
-    private fun printGrid(grid: Collection<Point>) {
+    private fun printGrid(grid: Collection<Point2D>) {
         val max = grid.maxOrNull() ?: return
         for (i in 0..max.y + 1) {
             for (j in 0..max.x + 1) {
-                val char = if(grid.contains(Point(j,i))) '⬜' else '⬛'
+                val char = if(grid.contains(Point2D(j,i))) '⬜' else '⬛'
                 print("$char")
             }
             print("\n")
@@ -46,12 +46,12 @@ object Day13 : Day {
         return -1
     }
 
-    private fun parseInput(): Pair<Set<Point>, List<Folder>> {
+    private fun parseInput(): Pair<Set<Point2D>, List<Folder>> {
         val paper = input
             .filter { it.matches(pointPattern) }
             .map {
                 val (x, y) = it.split(',')
-                Point(x.toInt(), y.toInt())
+                Point2D(x.toInt(), y.toInt())
             }.toSet()
 
         val instructions = input
@@ -64,13 +64,13 @@ object Day13 : Day {
     }
 
     class Folder(val axis: String, val position: Int) {
-        fun apply(point : Point) : Point? {
+        fun apply(point : Point2D) : Point2D? {
             if(axis == "x") {
                 if(point.x < position) {
                     return point
                 }
                 if(point.x > position) {
-                    return Point(point.x - (point.x - position) * 2, point.y)
+                    return Point2D(point.x - (point.x - position) * 2, point.y)
                 }
                 return null
             } else {
@@ -78,7 +78,7 @@ object Day13 : Day {
                     return point
                 }
                 if(point.y > position) {
-                    return Point(point.x, point.y - (point.y - position) * 2)
+                    return Point2D(point.x, point.y - (point.y - position) * 2)
                 }
                 return null
             }

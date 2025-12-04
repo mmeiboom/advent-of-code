@@ -1,6 +1,6 @@
 import nl.mmeiboom.adventofcode.lib.Day
 import nl.mmeiboom.adventofcode.lib.Direction
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceLines
 
 object Day3 : Day {
@@ -9,9 +9,9 @@ object Day3 : Day {
     private val pointsPerWire = wires.map { toPoints(it) }
     private val intersections = pointsPerWire.map { points -> points.map { it.first } }.let { (first, second) -> first.intersect(second) }
 
-    private fun toPoints(list: List<Pair<Direction, Int>>): List<Pair<Point, Int>> {
-        var current = Point(0, 0)
-        val points = mutableListOf<Pair<Point, Int>>()
+    private fun toPoints(list: List<Pair<Direction, Int>>): List<Pair<Point2D, Int>> {
+        var current = Point2D(0, 0)
+        val points = mutableListOf<Pair<Point2D, Int>>()
         var distance = 0
 
         list.forEach { (dir, steps) ->

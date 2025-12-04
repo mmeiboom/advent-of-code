@@ -1,6 +1,6 @@
 import nl.mmeiboom.adventofcode.lib.Day
 import nl.mmeiboom.adventofcode.lib.IntCodeComputer
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceString
 
 object Day17 : Day {
@@ -18,14 +18,14 @@ object Day17 : Day {
                 .sum()
     }
 
-    private fun toPointsMap(output: List<Char>): Map<Point, Char> {
+    private fun toPointsMap(output: List<Char>): Map<Point2D, Char> {
         var row = 0
         var col = 0
 
-        val scaffold = mutableMapOf<Point, Char>()
+        val scaffold = mutableMapOf<Point2D, Char>()
 
         output.forEach { o ->
-            scaffold.put(Point(row, col), o)
+            scaffold.put(Point2D(row, col), o)
             if (o == '\n') {
                 col = 0
                 row++

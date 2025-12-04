@@ -1,7 +1,7 @@
 package nl.mmeiboom.adventofcode.y2021
 
 import nl.mmeiboom.adventofcode.lib.Day
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceLines
 
 object Day9 : Day {
@@ -28,9 +28,9 @@ object Day9 : Day {
             .reduce { acc, i -> acc * i }
     }
 
-    private fun basin(startingPoint: Point): Int {
-        val basin = mutableSetOf<Point>()
-        val pointsToCheck = ArrayDeque<Point>()
+    private fun basin(startingPoint: Point2D): Int {
+        val basin = mutableSetOf<Point2D>()
+        val pointsToCheck = ArrayDeque<Point2D>()
         pointsToCheck.add(startingPoint)
         while(pointsToCheck.isNotEmpty()) {
             val p = pointsToCheck.removeFirst()
@@ -42,11 +42,11 @@ object Day9 : Day {
         return basin.size
     }
 
-    private fun oceanFloor(mapLines: List<String>): Map<Point, Int> {
-        val area: MutableMap<Point, Int> = mutableMapOf()
+    private fun oceanFloor(mapLines: List<String>): Map<Point2D, Int> {
+        val area: MutableMap<Point2D, Int> = mutableMapOf()
         mapLines.forEachIndexed { y, line ->
             line.forEachIndexed { x, char ->
-                area[Point(x, y)] = char - '0'
+                area[Point2D(x, y)] = char - '0'
             }
         }
         return area

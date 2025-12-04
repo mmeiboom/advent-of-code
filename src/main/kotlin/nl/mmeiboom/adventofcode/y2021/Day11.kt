@@ -1,7 +1,7 @@
 package nl.mmeiboom.adventofcode.y2021
 
 import nl.mmeiboom.adventofcode.lib.Day
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceLines
 
 object Day11 : Day {
@@ -44,11 +44,11 @@ object Day11 : Day {
         }
     }
 
-    private fun printGrid(cavern: Map<Point, Octopus>) {
+    private fun printGrid(cavern: Map<Point2D, Octopus>) {
         val max = cavern.keys.maxOrNull() ?: return
         for (i in 0..max.y) {
             for (j in 0..max.x) {
-                val octopus = cavern.getValue(Point(j, i))
+                val octopus = cavern.getValue(Point2D(j, i))
                 print("${octopus.energy}")
             }
             print("\n")
@@ -78,11 +78,11 @@ object Day11 : Day {
         }
     }
 
-    private fun List<String>.parseGrid(): Map<Point, Octopus> {
-        val area: MutableMap<Point, Octopus> = mutableMapOf()
+    private fun List<String>.parseGrid(): Map<Point2D, Octopus> {
+        val area: MutableMap<Point2D, Octopus> = mutableMapOf()
         this.forEachIndexed { y, line ->
             line.forEachIndexed { x, char ->
-                area[Point(x, y)] = Octopus(char - '0')
+                area[Point2D(x, y)] = Octopus(char - '0')
             }
         }
         return area

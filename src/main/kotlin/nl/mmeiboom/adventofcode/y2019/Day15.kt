@@ -1,4 +1,8 @@
-import nl.mmeiboom.adventofcode.lib.*
+import nl.mmeiboom.adventofcode.lib.Day
+import nl.mmeiboom.adventofcode.lib.Direction
+import nl.mmeiboom.adventofcode.lib.IntCodeComputer
+import nl.mmeiboom.adventofcode.lib.Point2D
+import nl.mmeiboom.adventofcode.lib.resourceString
 import kotlin.math.min
 
 object Day15 : Day {
@@ -18,17 +22,17 @@ object Day15 : Day {
 
     class Robot {
 
-        private var currentLocation = Point(0, 0)
-        private val discoveredArea: MutableMap<Point, Int> = mutableMapOf(Pair(currentLocation, 0))
+        private var currentLocation = Point2D(0, 0)
+        private val discoveredArea: MutableMap<Point2D, Int> = mutableMapOf(Pair(currentLocation, 0))
         private val computer = IntCodeComputer(program)
 
-        fun discover() : Int {
-            val locations = mutableListOf<Point>()
+        fun discover(): Int {
+            val locations = mutableListOf<Point2D>()
 
             while (true) {
                 val backtracking = currentLocation.neighborsHv().none { !discoveredArea.containsKey(it) }
                 val nextLocation = currentLocation.neighborsHv().find { !discoveredArea.containsKey(it) }
-                        ?: locations.removeAt(locations.size - 1)
+                    ?: locations.removeAt(locations.size - 1)
 
                 val direction = currentLocation.directionTo(nextLocation)
                 val input = when (direction) {
@@ -42,21 +46,28 @@ object Day15 : Day {
                 when (computer.runToNextOutput()) {
                     0L -> discoveredArea[nextLocation] = -1
                     1L -> {
-                        if(!backtracking) {
+                        if (!backtracking) {
                             locations.add(currentLocation)
-                            discoveredArea[nextLocation] = min(discoveredArea.getOrDefault(nextLocation, Int.MAX_VALUE), discoveredArea.getValue(currentLocation) + 1)
+                            discoveredArea[nextLocation] = min(
+                                discoveredArea.getOrDefault(nextLocation, Int.MAX_VALUE),
+                                discoveredArea.getValue(currentLocation) + 1
+                            )
                         }
                         currentLocation = nextLocation
                     }
+
                     2L -> {
-                        return min(discoveredArea.getOrDefault(nextLocation, Int.MAX_VALUE), discoveredArea.getValue(currentLocation) + 1)
+                        return min(
+                            discoveredArea.getOrDefault(nextLocation, Int.MAX_VALUE),
+                            discoveredArea.getValue(currentLocation) + 1
+                        )
                     }
                 }
             }
         }
 
-        fun findMax() : Int {
-            val locations = mutableListOf<Point>()
+        fun findMax(): Int {
+            val locations = mutableListOf<Point2D>()
             val startLocation = currentLocation
             discoveredArea.clear()
             discoveredArea[currentLocation] = 0
@@ -64,12 +75,12 @@ object Day15 : Day {
             while (true) {
                 val backtracking = currentLocation.neighborsHv().none { !discoveredArea.containsKey(it) }
 
-                if(backtracking && currentLocation == startLocation) {
+                if (backtracking && currentLocation == startLocation) {
                     return discoveredArea.values.maxOrNull() ?: -1
                 }
 
                 val nextLocation = currentLocation.neighborsHv().find { !discoveredArea.containsKey(it) }
-                        ?: locations.removeAt(locations.size - 1)
+                    ?: locations.removeAt(locations.size - 1)
 
                 val direction = currentLocation.directionTo(nextLocation)
                 val input = when (direction) {
@@ -83,9 +94,12 @@ object Day15 : Day {
                 when (computer.runToNextOutput()) {
                     0L -> discoveredArea[nextLocation] = -1
                     1L, 2L -> {
-                        if(!backtracking) {
+                        if (!backtracking) {
                             locations.add(currentLocation)
-                            discoveredArea[nextLocation] = min(discoveredArea.getOrDefault(nextLocation, Int.MAX_VALUE), discoveredArea.getValue(currentLocation) + 1)
+                            discoveredArea[nextLocation] = min(
+                                discoveredArea.getOrDefault(nextLocation, Int.MAX_VALUE),
+                                discoveredArea.getValue(currentLocation) + 1
+                            )
                         }
                         currentLocation = nextLocation
                     }

@@ -1,6 +1,6 @@
 package nl.mmeiboom.adventofcode.y2015.day3
 
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.Solution
 
 class SphericalHouses(fileName: String?) : Solution<CharArray, Int>(fileName) {
@@ -9,7 +9,7 @@ class SphericalHouses(fileName: String?) : Solution<CharArray, Int>(fileName) {
     }
 
     override fun solve1(data: List<CharArray>): Int {
-        var currentPoint = Point(0, 0)
+        var currentPoint = Point2D(0, 0)
         val points = mutableSetOf(currentPoint)
         val instructions = data.single()
         instructions.forEach {
@@ -26,8 +26,8 @@ class SphericalHouses(fileName: String?) : Solution<CharArray, Int>(fileName) {
     }
 
     override fun solve2(data: List<CharArray>): Int {
-        var robot = Point(0, 0)
-        var santa = Point(0, 0)
+        var robot = Point2D(0, 0)
+        var santa = Point2D(0, 0)
         val points = mutableSetOf(robot)
         val instructions = data.single()
         instructions.forEachIndexed { i, it ->

@@ -1,5 +1,5 @@
 import nl.mmeiboom.adventofcode.lib.Day
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceLines
 import kotlin.math.min
 
@@ -14,7 +14,7 @@ object Day18 : Day {
         return distanceToCollectKeys('@', keysToCollect, initialPosition)
     }
 
-    private fun distanceToCollectKeys(currentKey: Char, keys: List<Char>, currentPosition: Point): Int {
+    private fun distanceToCollectKeys(currentKey: Char, keys: List<Char>, currentPosition: Point2D): Int {
         if (keys.isEmpty()) return 0
         val cacheKey = currentKey + keys.joinToString("")
         if (cache.containsKey(cacheKey)) {
@@ -35,10 +35,10 @@ object Day18 : Day {
 
     private val cache: MutableMap<String, Int> = mutableMapOf()
 
-    private fun scanForKeys(initialPosition: Point, keysToCollect: List<Char>): List<ReachableKey> {
+    private fun scanForKeys(initialPosition: Point2D, keysToCollect: List<Char>): List<ReachableKey> {
         var currentPosition = initialPosition
-        val discoveredArea: MutableMap<Point, Int> = mutableMapOf(Pair(initialPosition, 0))
-        val previousPositions = mutableListOf<Point>()
+        val discoveredArea: MutableMap<Point2D, Int> = mutableMapOf(Pair(initialPosition, 0))
+        val previousPositions = mutableListOf<Point2D>()
         val reachableKeys = mutableListOf<ReachableKey>()
 
         while (true) {
@@ -74,17 +74,17 @@ object Day18 : Day {
         }
     }
 
-    data class ReachableKey(val point: Point, val key: Char, val distance: Int)
+    data class ReachableKey(val point: Point2D, val key: Char, val distance: Int)
 
     override fun part2(): Any {
         return "nyi" // day18b(resourceLines(2019, 18))
     }
 
-    private fun toPoints(mapLines: List<String>): Map<Point, Char> {
-        val points = mutableMapOf<Point, Char>()
+    private fun toPoints(mapLines: List<String>): Map<Point2D, Char> {
+        val points = mutableMapOf<Point2D, Char>()
         mapLines.forEachIndexed { y, line ->
             line.forEachIndexed { x, char ->
-                points[Point(x, y)] = char
+                points[Point2D(x, y)] = char
             }
         }
         return points

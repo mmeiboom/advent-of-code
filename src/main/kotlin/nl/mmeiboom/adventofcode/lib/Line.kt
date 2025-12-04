@@ -9,16 +9,16 @@ data class Line(
         fun isHorizontal() = y1 == y2
         fun isVertical() = x1 == x2
 
-        fun pointsOnLine() : List<Point> {
+        fun pointsOnLine() : List<Point2D> {
             return if(isHorizontal()) {
-                range(x1,x2).map { Point(it, y1)}
+                range(x1,x2).map { Point2D(it, y1)}
             } else if(isVertical()) {
-                range(y1,y2).map { Point(x1, it)}
+                range(y1,y2).map { Point2D(x1, it)}
             } else {
                 val xs = range(x1, x2)
                 val ys = range(y1, y2)
                 return xs.zip(ys).map {
-                    (x,y) -> Point(x,y)
+                    (x,y) -> Point2D(x,y)
                 }
             }
         }

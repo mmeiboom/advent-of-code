@@ -1,6 +1,6 @@
 import nl.mmeiboom.adventofcode.lib.Day
 import nl.mmeiboom.adventofcode.lib.IntCodeComputer
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceString
 
 object Day13 : Day {
@@ -19,15 +19,15 @@ object Day13 : Day {
     override fun part2(): Any {
         val computer = IntCodeComputer(game).also { it.memory.set(0, 2) }
 
-        var paddle = Point(-1, -1)
-        var ball = Point(-1, -1)
+        var paddle = Point2D(-1, -1)
+        var ball = Point2D(-1, -1)
         var score = 0L
 
         while (!computer.done) {
             while (!computer.done && computer.output.size < 3) computer.doCalculation()
 
             if (!computer.done) {
-                val point = Point(computer.output.removeAt(0), computer.output.removeAt(0))
+                val point = Point2D(computer.output.removeAt(0), computer.output.removeAt(0))
                 val element = computer.output.removeAt(0)
 
                 when {
@@ -41,7 +41,7 @@ object Day13 : Day {
                             else -> computer.input += 0L
                         }
                     }
-                    point == Point(-1, 0) -> score = element
+                    point == Point2D(-1, 0) -> score = element
                 }
             }
         }

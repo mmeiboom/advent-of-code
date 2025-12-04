@@ -15,7 +15,7 @@ object Day11 : Day {
     }
 
     override fun part2(): Any {
-        val startPosition = Point(0,0)
+        val startPosition = Point2D(0,0)
         val hull = Hull()
         hull.paint(startPosition, WHITE)
 
@@ -29,7 +29,7 @@ object Day11 : Day {
     private fun prettyPrint(hull: Hull) {
         for (y in 0..5) {
             for (x in 0..40) {
-                if (hull.tiles.get(Point(x, y)) == WHITE) {
+                if (hull.tiles.get(Point2D(x, y)) == WHITE) {
                     print("⬜")
                 } else {
                     print("⬛")
@@ -40,7 +40,7 @@ object Day11 : Day {
     }
 
     data class Robot(
-            var position: Point = Point(0, 0),
+            var position: Point2D = Point2D(0, 0),
             var direction: Direction = NORTH
     ) {
         fun paint(hull: Hull) {
@@ -74,9 +74,9 @@ object Day11 : Day {
         }
     }
 
-    data class Hull(val tiles: MutableMap<Point, Int> = mutableMapOf()) {
-        fun getColor(point: Point) = tiles.getOrDefault(point, BLACK)
-        fun paint(position: Point, color: Int) {
+    data class Hull(val tiles: MutableMap<Point2D, Int> = mutableMapOf()) {
+        fun getColor(point: Point2D) = tiles.getOrDefault(point, BLACK)
+        fun paint(position: Point2D, color: Int) {
             tiles[position] = color
         }
     }

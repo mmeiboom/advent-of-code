@@ -1,7 +1,7 @@
 package nl.mmeiboom.adventofcode.y2020
 
 import nl.mmeiboom.adventofcode.lib.Day
-import nl.mmeiboom.adventofcode.lib.Point
+import nl.mmeiboom.adventofcode.lib.Point2D
 import nl.mmeiboom.adventofcode.lib.resourceLines
 import nl.mmeiboom.adventofcode.y2020.Day11.State.EMPTY
 import nl.mmeiboom.adventofcode.y2020.Day11.State.OCCUPIED
@@ -25,9 +25,9 @@ object Day11 : Day {
         return result.count { it.value == OCCUPIED }.toLong()
     }
 
-    private fun visibleNeighbors(point: Point): Set<Point> {
+    private fun visibleNeighbors(point: Point2D): Set<Point2D> {
         val dirs = point.neighbors().map { point.distance(it) }
-        val visible = mutableSetOf<Point>()
+        val visible = mutableSetOf<Point2D>()
         dirs.forEach {
             var done = false
             var candidate = point
@@ -45,7 +45,7 @@ object Day11 : Day {
         return visible
     }
 
-    private fun runWhileNotStable(neighbours: Map<Point, Set<Point>>, threshold: Int): Map<Point, State> {
+    private fun runWhileNotStable(neighbours: Map<Point2D, Set<Point2D>>, threshold: Int): Map<Point2D, State> {
         var currentArea = seatingArea
         var stable = false
         var i = 0
@@ -59,13 +59,13 @@ object Day11 : Day {
         return currentArea
     }
 
-    private fun stable(a1: Map<Point, State>, a2: Map<Point, State>): Boolean {
+    private fun stable(a1: Map<Point2D, State>, a2: Map<Point2D, State>): Boolean {
         val left = a1.filter { it.value == OCCUPIED }.keys
         val right = a2.filter { it.value == OCCUPIED }.keys
         return left == right
     }
 
-    private fun update(area: Map<Point, State>, neighbours: Map<Point, Set<Point>>, threshhold: Int): Map<Point, State> {
+    private fun update(area: Map<Point2D, State>, neighbours: Map<Point2D, Set<Point2D>>, threshhold: Int): Map<Point2D, State> {
         return area.map {
             val (point, state) = it
             val occupiedNeighbours = neighbours.getValue(point).count { n -> area[n] == OCCUPIED }
@@ -79,12 +79,12 @@ object Day11 : Day {
         }.toMap()
     }
 
-    private fun seatingArea(mapLines: List<String>): Map<Point, State> {
-        val area: MutableMap<Point, State> = mutableMapOf()
+    private fun seatingArea(mapLines: List<String>): Map<Point2D, State> {
+        val area: MutableMap<Point2D, State> = mutableMapOf()
         mapLines.forEachIndexed { y, line ->
             line.forEachIndexed { x, char ->
                 if (char == 'L') {
-                    area.put(Point(x, y), EMPTY)
+                    area.put(Point2D(x, y), EMPTY)
                 }
             }
         }
