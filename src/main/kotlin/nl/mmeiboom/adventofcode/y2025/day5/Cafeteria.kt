@@ -2,6 +2,7 @@ package nl.mmeiboom.adventofcode.y2025.day5
 
 import nl.mmeiboom.adventofcode.lib.Solution
 import kotlin.math.max
+import kotlin.math.min
 
 class Cafeteria(fileName: String?) : Solution<String, Long>(fileName) {
 
@@ -23,28 +24,42 @@ class Cafeteria(fileName: String?) : Solution<String, Long>(fileName) {
 
     override fun solve2(data: List<String>): Long {
 
-        // Sort to ensure simple merging
-        val sortedRanges = data
+        val ranges = data
             .takeWhile { it.isNotBlank() }
             .map {
                 val (from, to) = it.split("-")
-                Pair(from.toLong(), to.toLong())
-            }.sortedWith(compareBy({ it.first }, { it.second }))
-
-        // Bit verbose merging logic
-        val unmerged = sortedRanges.toMutableList()
-        val merged = mutableListOf<Pair<Long, Long>>()
-        while (unmerged.isNotEmpty()) {
-            var mergedRange = unmerged.removeFirst()
-            var max = mergedRange.second
-            while (unmerged.isNotEmpty() && unmerged.first().first <= max) {
-                val mergeIn = unmerged.removeFirst()
-                max = max(max, mergeIn.second)
-                mergedRange = Pair(mergedRange.first, max)
+                Range(from.toLong(), to.toLong())
             }
-            merged.add(mergedRange)
+
+        val merged = combine(emptyList(), ranges)
+        return merged.sumOf { it.length }
+    }
+
+    data class Range(val lower: Long, val upper: Long) {
+        val length = upper - lower + 1
+
+        fun overlapsWith(other: Range): Boolean {
+            return this.upper >= other.lower && this.lower <= other.upper
         }
 
-        return merged.sumOf { it.second - it.first + 1 }
+        fun combinedWith(other: Range): Range {
+            return Range(
+                min(this.lower, other.lower),
+                max(this.upper, other.upper)
+            )
+        }
+    }
+
+    tailrec fun combine(merged: List<Range>, remaining: List<Range>): List<Range> {
+        if(remaining.isEmpty()) return merged
+
+        val next = remaining.first()
+        val into = merged.find { it.overlapsWith(next) }
+        if(into == null) {
+            return combine(merged + next, remaining - next)
+        } else {
+            val combined = next.combinedWith(into)
+            return combine(merged - into, remaining - next + combined)
+        }
     }
 }
