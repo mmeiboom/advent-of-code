@@ -1,5 +1,8 @@
 package nl.mmeiboom.adventofcode.lib
 
+import kotlin.math.max
+import kotlin.math.min
+
 data class Point2D(val x: Int, val y: Int) : Comparable<Point2D> {
 
     constructor(x: Long, y: Long) : this(x.toInt(), y.toInt())
@@ -48,6 +51,20 @@ data class Point2D(val x: Int, val y: Int) : Comparable<Point2D> {
     fun up(amount: Int = 1) = copy(y = y - amount)
     fun left(amount: Int = 1) = copy(x = x - amount)
     fun right(amount: Int = 1) = copy(x = x + amount)
+
+    fun squareWith(other: Point2D): MutableSet<Point2D> {
+        val points = mutableSetOf<Point2D>()
+        val minX = min(x, other.x)
+        val minY = min(y, other.y)
+        val maxX = max(x, other.x)
+        val maxY = max(y, other.y)
+        for(x in minX.. maxX) {
+            for(y in minY..maxY) {
+                points.add(Point2D(x, y))
+            }
+        }
+        return points
+    }
 
     companion object {
         fun parse(v: String, r: Regex) = tryParse(v, r)

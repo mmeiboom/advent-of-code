@@ -2,14 +2,14 @@ package nl.mmeiboom.adventofcode.y2015.day5
 
 import nl.mmeiboom.adventofcode.lib.Solution
 
-class StockingStuffer(fileName: String?) : Solution<String, Int>(fileName) {
+class NaughtyOrNice(fileName: String?) : Solution<String, Int>(fileName) {
 
     private val vowels = setOf('a', 'e', 'i', 'o', 'u')
     private val blacklist = setOf(
-        Pair('a','b'),
-        Pair('c','d'),
-        Pair('p','q'),
-        Pair('x','y'),
+        Pair('a', 'b'),
+        Pair('c', 'd'),
+        Pair('p', 'q'),
+        Pair('x', 'y'),
     )
 
     private val repeatedPairMatcher = Regex("(..).*\\1")

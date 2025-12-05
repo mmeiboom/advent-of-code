@@ -9,12 +9,12 @@ class PrintingDepartment(fileName: String?) : Solution<String, Int>(fileName) {
     override fun parse(line: String) = line
 
     override fun solve1(data: List<String>): Int {
-        val map = Matrix.from(data).points.toMutableMap()
+        val map = Matrix.from(data).toMutableMap()
         return map.removeRolls()
     }
 
     override fun solve2(data: List<String>): Int {
-        val map = Matrix.from(data).points.toMutableMap()
+        val map = Matrix.from(data).toMutableMap()
         var totalRemoved = 0
         while (true) {
             val removed = map.removeRolls()
