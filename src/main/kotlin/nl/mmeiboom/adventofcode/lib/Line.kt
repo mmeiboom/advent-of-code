@@ -6,6 +6,8 @@ data class Line(
         val x2: Int,
         val y2: Int
     ) {
+        constructor(p1: Point2D, p2: Point2D) : this(p1.x, p1.y, p2.x, p2.y)
+
         fun isHorizontal() = y1 == y2
         fun isVertical() = x1 == x2
 

@@ -6,11 +6,11 @@ import nl.mmeiboom.adventofcode.lib.UnionFind
 
 class Playground(fileName: String?) : Solution<Point3D, Int>(fileName) {
     override fun parse(line: String): Point3D {
-        return Point3D.of(line)
+        return Point3D.Companion.of(line)
     }
 
     override fun solve1(data: List<Point3D>): Int {
-        val circuit = UnionFind.new(data.size)
+        val circuit = UnionFind.Companion.new(data.size)
 
         weightedConnections(data)
             .take(1000)
@@ -24,7 +24,7 @@ class Playground(fileName: String?) : Solution<Point3D, Int>(fileName) {
     }
 
     override fun solve2(data: List<Point3D>): Int {
-        val circuit = UnionFind.new(data.size)
+        val circuit = UnionFind.Companion.new(data.size)
         weightedConnections(data)
             .forEach { (a, b) ->
                 circuit.union(a, b)
