@@ -34,9 +34,5 @@ class MovieTheater(fileName: String?) : Solution<Point2D, Long>(fileName) {
     private fun insidePolygon(
         polygon: List<Line>,
         rectangle: Rectangle,
-    ): Boolean {
-        return polygon.all {
-            rectangle.doesNotIntersect(it)
-        }
-    }
+    ) = polygon.all { rectangle.doesNotIntersect(it) }
 }
