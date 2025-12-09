@@ -24,11 +24,11 @@ class MovieTheater(fileName: String?) : Solution<Point2D, Long>(fileName) {
         val polygon = (data.zipWithNext() + listOf(Pair(data.last(), data.first())))
             .map { Line(it.first, it.second) }
 
-        val candidates = data.combinations(2)
+        return data.combinations(2)
             .map { Rectangle(it[0], it[1]) }
             .sortedByDescending { it.surface() }
-
-        return candidates.first { insidePolygon(polygon, it) }.surface()
+            .first { insidePolygon(polygon, it) }
+            .surface()
     }
 
     private fun insidePolygon(
