@@ -100,6 +100,16 @@
             <artifactId>combinatoricskt</artifactId>
             <version>1.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>io.ksmt</groupId>
+            <artifactId>ksmt-core</artifactId>
+            <version>0.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.ksmt</groupId>
+            <artifactId>ksmt-z3</artifactId>
+            <version>0.6.4</version>
+        </dependency>
     </dependencies>
 
 
