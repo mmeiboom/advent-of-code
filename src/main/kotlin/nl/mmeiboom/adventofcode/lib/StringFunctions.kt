@@ -1,3 +1,3 @@
 package nl.mmeiboom.adventofcode.lib
 
-fun String.extractNumbers() = this.split(" ").map { it.toLong() }
+fun String.extractNumbers() = this.split(" ",",").map { it.toLong() }
