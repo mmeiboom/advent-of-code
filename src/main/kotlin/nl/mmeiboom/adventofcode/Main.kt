@@ -13,7 +13,7 @@ import kotlin.time.measureTime
  */
 fun main() {
     val year = 2025
-    val day = getCurrentDay()
+    val day = 11 //getCurrentDay()
     solveDay(day, year) { s ->
         val solver = getConstructorOfDay(day, year).newInstance(s)
         solver
