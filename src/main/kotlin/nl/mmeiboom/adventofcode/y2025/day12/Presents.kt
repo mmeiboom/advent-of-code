@@ -2,12 +2,8 @@ package nl.mmeiboom.adventofcode.y2025.day12
 
 import nl.mmeiboom.adventofcode.lib.Solution
 
-/**
- * Advent of Code 2025, Day 11 - Reactor
- * Problem Description: http://adventofcode.com/2025/day/11
- * Blog Post/Commentary: https://todd.ginsberg.com/post/advent-of-code/2025/day11/
- */
-class Presents(fileName: String?) : Solution<String, Long>(fileName) {
+
+class Presents(fileName: String?) : Solution<String, Int>(fileName) {
 
     override fun parse(line: String): String {
         return line
@@ -15,21 +11,24 @@ class Presents(fileName: String?) : Solution<String, Long>(fileName) {
 
     val regex = "(\\d+)x(\\d+): ([(,)\\s\\d]*)".toRegex()
 
-    override fun solve1(data: List<String>): Long {
-        return data.filter {
-            regex.matches(it)
-        }
+    override fun solve1(data: List<String>) =
+        data.filter { regex.matches(it) }
             .count { fits(it) }
-            .toLong()
-    }
 
+
+    // No part 2 on Day 12
+    override fun solve2(data: List<String>) = -1
+
+    /**
+     * Checks if presents can be fit into a given area
+     *
+     * This implementation is silly, but it works for the given input.
+     * In reality, it should only have worked to filter out obvious areas that won't fit for pruning
+     */
     private fun fits(line: String): Boolean {
         val (w, h, counts) = regex.matchEntire(line)!!.destructured
         val presents = counts.split(" ").map { it.toLong() }
-        return w.toLong() * h.toLong() >= presents.sumOf { it * 9 }
-    }
 
-    override fun solve2(data: List<String>): Long {
-        return -1
+        return w.toLong() * h.toLong() >= presents.sumOf { it * 9 }
     }
 }
